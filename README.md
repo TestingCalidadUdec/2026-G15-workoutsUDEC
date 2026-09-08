@@ -38,4 +38,33 @@ This application consists of FastAPI backend with a React TypeScript frontend, p
 
 
 ## 🚀 Quick Start
-Check the readme in workouts_udec_backend and workouts_udec_frontend to get started.
+
+### With Docker (recommended)
+
+Requires Docker and Docker Compose.
+
+```bash
+cp .env.example .env
+docker compose up -d --build
+```
+
+- Frontend: http://localhost:3000
+- Backend / Swagger: http://localhost:8080/docs
+- The admin account (`admin@example.com` / `admin123`) is created automatically on first boot.
+
+Services: `frontend` (nginx serving the React build, reverse-proxying `/api` to the backend), `backend` (FastAPI + Uvicorn), `database` (PostgreSQL with a persistent `db_data` volume). All three have a `healthcheck`, and `backend`/`frontend` wait (`depends_on: condition: service_healthy`) for their dependency to actually be ready, not just started.
+
+Useful commands:
+```bash
+docker compose logs -f            # logs for all services
+docker compose ps                 # status / health of each container
+docker compose down               # stop (data persists in the volume)
+docker compose down -v            # stop and also wipe the data
+docker compose up -d --build      # rebuild after changing code or a Dockerfile
+```
+
+See `EXPLICACION_DOCKER.md` for the full breakdown of how the containerization is put together and why.
+
+### Without Docker
+
+Check the README in `workouts_udec_backend` and `workouts_udec_frontend`.
